@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Library App</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1>My Library11</h1>
+    </header>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="folders">
+                <h3>Folders</h3>
+                <ul id="foldersList">
+                    <li class="folder active" data-folder="all">All Books</li>
+                    <li class="folder" data-folder="to-read">To Read</li>
+                    <li class="folder" data-folder="reading">Reading</li>
+                    <li class="folder" data-folder="completed">Completed</li>
+                </ul>
+            </div>
+            <div class="filters">
+                <h3>Filters</h3>
+                <input type="text" id="searchInput" placeholder="Search by title or author..." />
+            </div>
+        </aside>
+
+        <main>
+            <div id="bookList" class="book-list">
+                <!-- La liste des livres sera injectée ici -->
+            </div>
+
+            <!-- Formulaire en modal -->
+            <div id="modal" class="modal hidden">
+                <div class="modal-content">
+                    <h2>Add a Book</h2>
+                    <form id="bookForm">
+                        <input type="text" id="title" placeholder="Book Title" required />
+                        <input type="text" id="author" placeholder="Author" required />
+                        <select id="status">
+                            <option value="to-read">To Read</option>
+                            <option value="reading">Reading</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <input type="text" id="isbn" placeholder="ISBN (Optional)" />
+                        <button type="button" onclick="scanISBN()">Scan ISBN</button>
+                        <button type="submit">Add Book</button>
+                        <button type="button" id="closeModal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+
+            <button id="addBookBtn" class="add-book-btn">+</button>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

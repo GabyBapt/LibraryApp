@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .book-list {
+            margin-top: 20px;
+        }
+        .book-item {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 5px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Libraryjj</h1>
+    </header>
+    <main>
+        <h2>Add a Book</h2>
+        <form id="bookForm">
+            <input type="text" id="title" placeholder="Book Title" required>
+            <input type="text" id="author" placeholder="Author" required>
+            <select id="status">
+                <option value="to-read">To Read</option>
+                <option value="reading">Reading</option>
+                <option value="completed">Completed</option>
+            </select>
+            <input type="text" id="isbn" placeholder="ISBN (Optional)">
+            <button type="button" onclick="scanISBN()">Scan ISBN</button>
+            <button type="submit">Add Book</button>
+        </form>
+
+        <div class="book-list" id="bookList">
+            <h2>Book List</h2>
+        </div>
+    </main>
+
+    <script>
+        let books = [];
+
+        document.getElementById('bookForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const status = document.getElementById('status').value;
+            const isbn = document.getElementById('isbn').value;
+
+            const book = { title, author, status, isbn };
+            books.push(book);
+
+            displayBooks();
+            this.reset();
+        });
+
+        function displayBooks() {
+            const list = document.getElementById('bookList');
+            list.innerHTML = '<h2>Book List</h2>';
+
+            books.forEach((book, index) => {
+                const div = document.createElement('div');
+                div.classList.add('book-item');
+                div.innerHTML = `<strong>${book.title}</strong> by ${book.author} - <em>${book.status}</em>` +
+                                (book.isbn ? `<br>ISBN: ${book.isbn}` : '');
+                list.appendChild(div);
+            });
+        }
+
+        function scanISBN() {
+            alert("ISBN scanner feature would open here (camera API)");
+            // In a real implementation, integrate QuaggaJS or similar to scan isbn
+        }
+    </script>
+</body>
+</html>

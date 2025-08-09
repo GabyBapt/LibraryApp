@@ -1,0 +1,172 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+.container {
+    display: flex;
+    max-width: 900px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    height: 600px;
+}
+.sidebar {
+    width: 220px;
+    border-right: 1px solid #ddd;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+.sidebar h3 {
+    margin-top: 0;
+}
+.folders ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+.folders li {
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    user-select: none;
+}
+.folders li:hover {
+    background-color: #e0f2e9;
+}
+.folders li.active {
+    background-color: #4CAF50;
+    color: white;
+}
+.filters input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+main {
+    flex: 1;
+    padding: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    overflow-y: auto;
+    padding-bottom: 70px; /* Pour laisser place au bouton */
+}
+
+.book-item {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 5px solid #4CAF50;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
+}
+
+.book-item strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.add-book-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    font-size: 32px;
+    line-height: 32px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    user-select: none;
+}
+
+.add-book-btn:hover {
+    background-color: #45a049;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+.modal.hidden {
+    display: none;
+}
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 320px;
+    max-width: 90%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.modal-content button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.modal-content button#closeModal {
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-content button#closeModal:hover {
+    background-color: #bbb;
+}

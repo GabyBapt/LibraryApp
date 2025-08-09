@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Library2</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Folders</h2>
+            <ul id="folderList">
+                <li class="active">All Books</li>
+                <li>To Read</li>
+                <li>Reading</li>
+                <li>Completed</li>
+            </ul>
+            <h2>Filters</h2>
+            <input type="text" id="search" placeholder="Search by title...">
+        </aside>
+
+        <main class="main-content">
+            <h1>List of Books</h1>
+            <div class="book-grid" id="bookGrid"></div>
+            <button class="add-book-btn" id="addBookBtn">+</button>
+        </main>
+    </div>
+
+    <!-- Modal for adding a new book -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Add New Book</h2>
+            <input type="text" id="title" placeholder="Book Title">
+            <input type="text" id="author" placeholder="Author">
+            <input type="text" id="isbn" placeholder="ISBN (optional)">
+            <select id="status">
+                <option value="to-read">To Read</option>
+                <option value="reading">Reading</option>
+                <option value="completed">Completed</option>
+            </select>
+            <button id="saveBook">Save</button>
+        </div>
+    </div>
+
+    <script src="app2.js"></script>
+</body>
+</html>
