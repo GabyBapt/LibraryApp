@@ -1,7 +1,9 @@
+import React, { useState, useContext } from "react";
+import { BookContext } from "../context/bookContext.jsx";
 
-import React, { useState } from "react";
+export default function AddBook({ onClose }) {
+  const { addBook } = useContext(BookContext);
 
-export default function AddBook({ setBooks, onClose }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [status, setStatus] = useState("unread");
@@ -9,10 +11,10 @@ export default function AddBook({ setBooks, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setBooks((prev) => [
-      ...prev,
-      { title, author, status, isbn }
-    ]);
+
+    // Utilise la fonction addBook du contexte pour ajouter un nouveau livre
+    addBook({ title, author, status, isbn });
+
     onClose();
   };
 
@@ -42,6 +44,7 @@ export default function AddBook({ setBooks, onClose }) {
           className="border border-gray-300 rounded px-2 py-1"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
         <input
           type="text"
@@ -50,6 +53,7 @@ export default function AddBook({ setBooks, onClose }) {
           className="border border-gray-300 rounded px-2 py-1"
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
+          required
         />
         <input
           type="text"
@@ -72,6 +76,7 @@ export default function AddBook({ setBooks, onClose }) {
         <button
           id="saveBook"
           className="bg-green-600 text-white px-4 py-2 rounded"
+          type="submit"
         >
           Save
         </button>

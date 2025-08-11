@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from "react";
-import AddBook from "./addBook";
+import AddCustomBook from "./addCustomBook.jsx";
 
 
-export default function AddMenu({ open, setOpen, setBooks }) {
+export default function AddMenu({ open, setOpen }) {
   const menuRef = useRef();
   const [showModal, setShowModal] = useState(false);
 
@@ -27,7 +27,7 @@ export default function AddMenu({ open, setOpen, setBooks }) {
     <div className="relative inline-block">
       {/* Bouton + */}
       <button
-        className="bg-green-600 text-white text-2xl rounded-2xl w-[50px] h-[50px] flex items-center justify-center"
+        className="bg-gray-600 text-white text-2xl rounded-2xl w-[50px] h-[50px] flex items-center justify-center"
         onClick={() => setOpen((v) => !v)}
       >
         +
@@ -37,35 +37,36 @@ export default function AddMenu({ open, setOpen, setBooks }) {
       {open && (
         <div
           ref={menuRef}
-          className="transition ease-in-out absolute right-15 bottom-0 mt-2 w-56 bg-white/90 backdrop-blur-md rounded-xl shadow-lg overflow-hidden z-50"
+          className="py-3 bg-gray-100 absolute right-15 bottom-0 mt-2 w-56 backdrop-blur-md rounded-xl shadow-lg overflow-hidden z-50"
         >
-          <div className="px-4 py-2 text-gray-500 font-semibold">
+          <div className="px-4 py-2 text-gray-700 font-semibold">
             Ajouter un livre
           </div>
+          <hr class="h-1  bg-gray-200 border-0 dark:bg-gray-700"></hr>
           <button className="w-full flex items-center px-4 py-2 hover:bg-gray-100">
-            📷 Scanner un code-barres
+            Scanner un code-barres
           </button>
+          <hr class="h-px  bg-gray-200 border-0 dark:bg-gray-700"></hr>
           <button className="w-full flex items-center px-4 py-2 hover:bg-gray-100">
-            📋 Scanner des codes-barres
+            Rechercher en ligne
           </button>
+          <hr class="h-px  bg-gray-200 border-0 dark:bg-gray-700"></hr>
           <button className="w-full flex items-center px-4 py-2 hover:bg-gray-100">
-            🔍 Rechercher en ligne
+            Saisir l'ISBN
           </button>
-          <button className="w-full flex items-center px-4 py-2 hover:bg-gray-100">
-            ⌨️ Saisir l'ISBN
-          </button>
-          <button 
-            className="w-full flex items-center px-4 py-2 hover:bg-gray-100"
+          <hr class="h-px  bg-gray-200 border-0 dark:bg-gray-700"></hr>
+          <button
+            className="w-full flex items-center px-4 pt-2 hover:bg-gray-100"
             onClick={() => setShowModal(true)}
           >
-            ✏️ Ajouter manuellement
+            Ajouter manuellement
           </button>
         </div>
       )}
        {/* Modal */}
         {showModal && (
-            <AddBook setBooks={setBooks} onClose={() => setShowModal(false)} />
-        )}
+            <AddCustomBook onClose={() => setShowModal(false)} />
+    )}
     </div>
   );
 }
