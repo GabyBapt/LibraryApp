@@ -1,2 +1,6 @@
 @import "tailwindcss";
 
+.blue-text-btn {
+    @apply hover:bg-gray-400 select-none p-1 text-blue-400 active:bg-gray-300 active:opacity-45 rounded;
+}
+

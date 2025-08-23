@@ -1,5 +1,13 @@
-
+/* FEATURE MAP: SideBar
+ * Files: sideBar.jsx, folderList.jsx
+ * Store: N/A (receives state from App.jsx)
+ * Dependencies: react
+ * Related: App, FolderList
+ *
+ * CRITICAL: This component is responsible for the folder list and the search input. It receives the selected folder and search term from the App component and updates them on user input.
+ */
 import FolderList from "../components/folderList.jsx";
+
 
 export default function SideBar({
   selectedFolder,
@@ -7,6 +15,7 @@ export default function SideBar({
   searchTerm,
   setSearchTerm,
 }) {
+
 
 
   return (

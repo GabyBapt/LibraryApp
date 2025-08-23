@@ -1,17 +1,15 @@
-
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
+import { FolderContext } from "../context/folderContext.jsx";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 
 export default function FilterList({ selectedFolder, setSelectedFolder }) {
-  const [folders, setFolders] = useState([
-    { label: "All Books", value: "all", editable: false },
-    { label: "To Read", value: "unread", editable: false },
-    { label: "Reading", value: "reading", editable: false },
-    { label: "Completed", value: "completed", editable: false },
-  ]);
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [menuOpenIndex, setMenuOpenIndex] = useState(null);
+  // 1. On récupère TOUTE la logique et les données depuis le contexte
+  const { folders, categories, addFolder, deleteFolder, renameFolder } = useContext(FolderContext);
+
+  // 2. Seul l'état d'UI reste ici
+  const [editingIndex, setEditingIndex] = useState(null); // On pourrait même passer à editingId
   const inputRef = useRef(null);
-  const menuRef = useRef(null);
+  // menuRef et menuOpenIndex sont aussi des états d'UI et restent ici
 
   useEffect(() => {
     if (editingIndex !== null && inputRef.current) {
@@ -19,115 +17,102 @@ export default function FilterList({ selectedFolder, setSelectedFolder }) {
     }
   }, [editingIndex]);
 
-  // Fermer le menu si clic à l'extérieur
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuOpenIndex(null);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  // La fonction handleAddFolder appelle le contexte et gère l'état d'UI
+  const handleAddFolder = () => {
+    const newFolderId = addFolder();
+    setEditingIndex(newFolderId); // On passe l'id du nouveau dossier
 
-  function handleAddFolder() {
-    const newFolder = { label: "", value: "new-folder-" + Date.now(), editable: true };
-    setFolders((prev) => [...prev, newFolder]);
-    setEditingIndex(folders.length);
+    // Idéalement, on voudrait que le nouvel item passe en mode édition
+    // C'est un point plus avancé, pour l'instant on se contente d'ajouter
   }
 
-  function handleNameSubmit(index, newName) {
-    const updated = [...folders];
-    updated[index] = {
-      ...updated[index],
-      label: newName.trim() || "New Folder",
-    };
-    setFolders(updated);
-    setEditingIndex(null);
-  }
+  // 3. La logique de renommage a disparu d'ici
+  // ...
 
   return (
     <div>
-      <div className="flex justify-between mb-3.5">
+      {/* Affichage des Catégories (depuis le contexte) */}
+      <h2 className="font-bold text-2xl mt-0 pb-2">Categories</h2>
+      <ul className="p-0 list-none">
+        {categories.map((cat) => (
+          <li key={cat.value}
+            aria-current={selectedFolder === cat.value ? "page" : undefined}
+            className={`flex items-center justify-between p-2 gap-2 rounded ${
+              selectedFolder === cat.value ? "font-bold bg-[#ddd]" : ""
+            }`}
+            onClick={() => setSelectedFolder(cat.value)}>
+            <span >{cat.label}</span>
+          </li>
+        ))}
+      </ul>
+
+      {/* Affichage des Dossiers (depuis le contexte) */}
+      <div className="flex justify-between mt-5 mb-3.5">
         <h2 className="font-bold text-2xl mt-0">Folders</h2>
-        <button
-          className="select-none p-1 text-blue-400 active:bg-gray-300 active:opacity-45 rounded"
-          onClick={handleAddFolder}
-        >
+        <button className="blue-text-btn" onClick={handleAddFolder}>
           New +
         </button>
       </div>
       <ul className="p-0 list-none">
-        {folders.map((folder, index) => (
+        {folders.map((folder) => ( // Note: on n'utilise plus l'index
           <li
-            key={folder.value}
-            aria-current={selectedFolder === folder.value ? "page" : undefined}
+            key={folder.id}
+            aria-current={selectedFolder === folder.id ? "page" : undefined}
             className={`flex items-center justify-between p-2.5 rounded ${
-              selectedFolder === folder.value ? "font-bold bg-[#ddd]" : ""
+              selectedFolder === folder.id ? "font-bold bg-[#ddd]" : ""
             }`}
-            onClick={() => setSelectedFolder(folder.value)}
+            onClick={() => setSelectedFolder(folder.id)}
           >
-            {editingIndex === index ? (
+            {editingIndex === folder.id ? ( // On compare par id
               <input
                 ref={inputRef}
-                type="text"
-                placeholder="Folder Name"
                 defaultValue={folder.label}
-                onBlur={(e) => handleNameSubmit(index, e.target.value)}
+                onBlur={(e) => {
+                  renameFolder(folder.id, e.target.value); // 4. On appelle la fonction du contexte
+                  setEditingIndex(null); // On gère l'état d'UI
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    handleNameSubmit(index, e.target.value);
+                    renameFolder(folder.id, e.target.value);
+                    setEditingIndex(null);
                   }
                 }}
-                className="text-sm border border-gray-300 rounded px-2 py-1 w-full"
+                // ...
               />
             ) : (
-              <span>{folder.label}</span>
+              <span onClick={() => setSelectedFolder({ type: 'folder', value: folder.id })}>{folder.label}</span>
             )}
 
-            {/* Bouton menu contextuel */}
             {folder.editable && (
-              <div className="relative text-2 m-0" ref={menuRef}>
-                <button
-                  className="text-gray-500 hover:text-gray-700 ml-2"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setMenuOpenIndex(menuOpenIndex === index ? null : index);
-                  }}
-                >
-                  ⋮
-                </button>
-
-                {/* Menu */}
-                {menuOpenIndex === index && (
-                  <div className="absolute right-0 mt-1 w-32 bg-white border border-gray-200 rounded shadow-lg z-10">
-                    <button
-                      className="w-full text-left px-3 py-1 text-sm hover:bg-gray-100"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEditingIndex(index);
-                        setMenuOpenIndex(null);
-                      }}
-                    >
-                        Rename
-                    </button>
-                    <button
-                      className="bg-red-500 w-full text-left px-3 py-1 rounded-b text-sm hover:bg-gray-100 text-red-1000"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setFolders(folders.filter((_, i) => i !== index));
-                        setMenuOpenIndex(null);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
+              <FolderEditMenu
+                onEdit={() => setEditingIndex(folder.id)} // On passe la fonction pour gérer l'état d'UI
+                onDelete={() => deleteFolder(folder.id)}   // On passe la fonction du contexte
+              />
             )}
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+// Ce composant enfant reçoit maintenant des fonctions en props
+function FolderEditMenu({ onDelete, onEdit }) {
+  return (
+    <Menu>
+      <MenuButton className="select-none">⋮</MenuButton>
+      <MenuItems anchor="right end" className="select-none bg-gray-100 hover:bg-gray-600 rounded p-3 [--anchor-gap:--spacing(2)]">
+        <MenuItem>
+          <button className="block text-[1.2rem]" onClick={onEdit}>
+            Rename
+          </button>
+        </MenuItem>
+        <MenuItem>
+          <button className="block text-[1.2rem]" onClick={onDelete}>
+            Delete
+          </button>
+        </MenuItem>
+      </MenuItems>
+    </Menu>
   );
 }

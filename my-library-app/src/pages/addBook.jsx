@@ -26,14 +26,14 @@ export default function AddBook({ setBooks, onClose }) {
         className=" bg-white px-5 pb-5 rounded w-[300px] flex flex-col gap-5"
       >
         <div className=" pt-3 flex top-0 items-center justify-between">
-          <h2 className="text-lg font-bold">Add New Book</h2>
+          
           <span
             className="cursor-pointer text-xl"
             id="closeModal"
             onClick={onClose}
           >
             &times;
-          </span>
+<h2 className="text-lg font-bold">Add New Book</h2>          </span>
         </div>
         <input
           type="text"

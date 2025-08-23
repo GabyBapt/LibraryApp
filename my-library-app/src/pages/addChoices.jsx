@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import AddCustomBook from "./addCustomBook.jsx";
+import BookModal from "./bookModal.jsx";
 
 
 export default function AddMenu({ open, setOpen }) {
@@ -65,7 +65,7 @@ export default function AddMenu({ open, setOpen }) {
       )}
        {/* Modal */}
         {showModal && (
-            <AddCustomBook onClose={() => setShowModal(false)} />
+            <BookModal mode={"add"} onClose={() => setShowModal(false)} />
     )}
     </div>
   );
